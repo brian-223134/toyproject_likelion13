@@ -18,6 +18,21 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+secret_file = os.path.join(BASE_DIR, 'secrets.json') 
+
+with open(secret_file) as f:
+    secrets = json.loads(f.read())
+
+def get_secret(setting, secrets=secrets): 
+# secret 변수를 가져오거나 그렇지 못 하면 예외를 반환
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the {} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
+
+SECRET_KEY = get_secret("SECRET_KEY")
+
 ALLOWED_HOSTS = ['*']
 
 # Quick-start development settings - unsuitable for production
