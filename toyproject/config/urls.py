@@ -20,5 +20,5 @@ from guestbook.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('guestbook.urls')),
+    path('guestbook/', include('guestbook.urls')),
 ]
