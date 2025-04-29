@@ -61,11 +61,13 @@ def guestbook_delete(request, pk): # id를 받아오자
     except:
         return JsonResponse({"error": "올바르지 않은 JSON 형식입니다."}, status=400)
     
-    password = content.get('password') # 비밀번호를 DB에서 가져온다.
+    password = content.get('password').strip() # db에서 비번 가져오기
+    db_password = entry.password.strip()
+    
     if not password:
         return JsonResponse({"error": "password를 작성해주세요."}, status=400)
     
-    if password != entry.password:
+    if password != db_password:
         return JsonResponse({"error": "잘못된 password입니다."}, status=403)
     
     entry.delete()
